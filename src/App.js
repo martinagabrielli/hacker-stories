@@ -23,26 +23,32 @@ const App = () => {
     },
   ];
 
-  const handleChange = (event) => {
-    console.log(event.target.value);
-  };
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  }
+
+  const searchedStories = stories.filter(story =>
+      story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
       <h1>My Hacker Stories</h1>
 
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={handleChange} />
+      <Search onSearch={handleSearch} />
 
       <hr />
 
-      <List list={stories} />
+      <List list={searchedStories} />
       <Greeting greeting={greeting} />
       <Test test={{ text: 'This is a test' }} />
     </div>
   );
 };
 
+// Components
 const List = props => {
   return (
     <ul>
@@ -66,5 +72,14 @@ class Greeting extends Component {
 }
 
 const Test = ({ test }) => <h1>{test.text}</h1>;
+
+const Search = props => {
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input id="search" type="text" onChange={props.onSearch} />
+    </div>
+  )
+}
 
 export default App;
