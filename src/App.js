@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 
 const App = () => {
-  const greeting = 'Welcome to React';
-  const test = 'lol';
-
   const stories = [
     {
       title: 'React',
@@ -21,9 +18,17 @@ const App = () => {
       points: 5,
       objectID: 1,
     },
+    {
+      title: 'Lol',
+      url: 'https://lol.js.org/',
+      author: 'Mr Lol',
+      num_comments: 6,
+      points: 2,
+      objectID: 2,
+    },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchTerm, setSearchTerm] = React.useState('React');
 
   const handleSearch = event => {
     setSearchTerm(event.target.value);
@@ -37,49 +42,40 @@ const App = () => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search onSearch={handleSearch} />
+      <Search search={searchTerm} onSearch={handleSearch} />
 
       <hr />
 
       <List list={searchedStories} />
-      <Greeting greeting={greeting} />
-      <Test test={{ text: 'This is a test' }} />
     </div>
   );
 };
 
 // Components
-const List = props => {
-  return (
-    <ul>
-      {props.list.map((item) => (
-        <li key={item.objectID}>
-          <span>
-            <a href={item.url}>{item.title}</a>
-          </span>
-          <span>{item.author}</span>
-          <span>{item.num_comments}</span>
-          <span>{item.points}</span>
-        </li>
-      ))}
-    </ul>
-  );
-};
-class Greeting extends Component {
-  render() {
-    return <h1>{this.props.greeting}</h1>;
-  }
-}
+const Search = ({ search, onSearch }) => (
+  <div>
+    <label htmlFor="search">Search: </label>
+    <input 
+      id="search" 
+      type="text"
+      value={search}
+      onChange={onSearch} 
+    />
+  </div>
+);
 
-const Test = ({ test }) => <h1>{test.text}</h1>;
+const List = ({ list }) =>
+  list.map(item => <Item key={item.objectID} item={item} />);
 
-const Search = props => {
-  return (
-    <div>
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" onChange={props.onSearch} />
-    </div>
-  )
-}
+const Item = ({ item }) => (
+  <div>
+      <span>
+        <a href={item.url}>{item.title}</a>
+      </span>
+      <span>{item.author}</span>
+      <span>{item.num_comments}</span>
+      <span>{item.points}</span>
+  </div>
+);
 
 export default App;
